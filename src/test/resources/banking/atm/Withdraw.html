@@ -1,0 +1,134 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+
+    <head>
+        <link href="../../concordion.css" rel="stylesheet" type="text/css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+
+	<body>
+
+        <h1>Feature: ATM - Withdraw</h1>
+        
+        <h2>Business Rules</h2>
+        <p>
+	        <ul>
+	        	<li>If the customer enters a PIN incorrectly three times within 72 hours, then his/her bank card is blocked.</li> 
+	       		<li>If the customer selects an amount greater than his/her funds, then the ATM does not dispense the money and asks customer to check his/her balance.</li>
+	        	<li>If the customer selects an amount that there are not bills available in the ATM, then the ATM shows a message and ends the operation.</li>   
+        	</ul>
+        </p>
+        
+        <div concordion:example="before">
+        	<h3>Before</h3>
+        	<p concordion:execute="setCustomer(#customerName, #accountNumber, #accountBalance, #bankCardNumber, #bankCardPIN)">
+        		<span concordion:set="#customerName">J. F. Piper</span> is a client of The American Bank
+                He has a current account, which number <span concordion:set="#accountNumber">12565408</span> and balance is $<span concordion:set="#accountBalance">90.00</span>
+                Piper goes to an ATM and identifies himself using a bank card number <span concordion:set="#bankCardNumber">8888 7777 6666 5555</span>
+                The bank card PIN is <span concordion:set="#bankCardPIN">123456</span>
+				The ATM has <span concordion:execute="setAvailableBills(#TEXT)">200 bills of 10; 150 bills of 50; 110 bills of 100</span>        	
+        	</p>
+        
+        </div>
+
+        <div concordion:example="basic-flow">
+        	<h3>Scenario</h3>
+            <p>
+            	A customer withdraws an amount of money from his/her bank account through an ATM, using a card and a valid PIN successfully. 
+        	</p>
+        	
+        	<h3>Example</h3>
+            <p>
+                Piper chooses the withdraw option.	
+                He enters the amount of $<span concordion:set="#amount">30.00</span>. 
+                The ATM requests the PIN.
+                John informs <span concordion:set="#pin">123456</span> and confirms the operation.
+                John pulls out the bank card from the ATM.
+                The ATM shows the message <span concordion:assert-equals="withdraw(#bankCardNumber,#pin,#amount)">The transaction has been completed successfully!</span>.
+                The ATM dispenses the money.
+                The balance of the account should be <span concordion:assert-equals="getBalance(#accountNumber)">60.00</span>.
+            </p>
+        </div>
+        
+        <div concordion:example="alternative-a">
+        	<h3>Scenario</h3>
+            <p>
+            	A customer tries to withdraw an amount of money from his/her bank account through an ATM, but it fails because he/she enters an invalid PIN. 
+        	</p>
+        	
+        	<h3>Examples</h3>
+        	
+            <p>
+            	He has entered his Card PIN incorrectly <span concordion:execute="setNumberOfIncorretPINWithin72Hours(#TEXT)">0</span> times in the last 72 hours.
+                Piper chooses the withdraw option.
+                He enters the amount of $<span concordion:set="#amount">30</span>.
+                The ATM requests the PIN.
+                John informs <span concordion:set="#pin">123123</span> and confirms the operation.
+                John pulls out the bank card from the ATM.
+                The ATM shows the message <span concordion:assert-equals="withdraw(#bankCardNumber,#pin,#amount)">Invalid PIN!</span>.
+                The balance of the account should be <span concordion:assert-equals="getBalance(#accountNumber)">90.00</span>.
+            </p>
+        
+            <p>
+            	He has entered his Card PIN incorrectly <span concordion:execute="setNumberOfIncorretPINWithin72Hours()">1</span> time in the last 72 hours.
+                He entered the wrong PIN for the last time <span concordion:execute="setMinutesFromLastWrongPIN()">120</span> minutes ago.
+                Piper chooses the withdraw option.
+                He enters the amount of $<span concordion:set="#amount">30</span>. 
+                The ATM requests the PIN.
+                John informs <span concordion:set="#pin">123123</span> and confirms the operation.
+                John pulls out the bank card from the ATM.
+                The ATM shows the message <span concordion:assert-equals="withdraw(#bankCardNumber,#pin,#amount)">Invalid PIN! You have one more attempt in the next 70 hours, otherwise your bank card will be blocked for security reasons </span>.
+            	The balance of the account should be <span concordion:assert-equals="getBalance(#accountNumber)">90.00</span>.
+            </p>
+       
+            <p>
+            	He has entered his Card PIN incorrectly <span concordion:execute="setNumberOfIncorretPINWithin72Hours()">2</span> time in the last 72 hours.
+                He entered the wrong PIN for the last time <span concordion:execute="setMinutesFromLastWrongPIN()">125</span> minutes ago.
+                Piper chooses the withdraw option.
+                He enters the amount of $<span concordion:set="#amount">30</span>. 
+                The ATM requests the PIN.
+                John informs <span concordion:set="#pin">123123</span> and confirms the operation.
+                John pulls out the bank card from the ATM.
+                The ATM shows the message "<span concordion:assert-equals="withdraw(#bankCardNumber,#pin,#amount)">Invalid PIN! Your bank card has been blocked for security reasons! Please, call customer service for more information.</span>".
+            	The balance of the account should be <span concordion:assert-equals="getBalance(#accountNumber)">90.00</span>.
+            </p>
+        </div>
+        
+        <div concordion:example="alternative-b">
+        	<h3>Scenario</h3>
+            <p>
+            	A customer tries to withdraw an amount of money from his/her bank account through an ATM, but it fails because he/she enters an invalid amount. 
+        	</p>
+        	
+        	<h3>Example</h3>
+        	
+            <p>
+                Piper chooses the withdraw option and enters the amount of $<span concordion:set="#amount">31</span>. 
+                The ATM requests the PIN.
+                John informs <span concordion:set="#pin">123456</span> and confirms the operation.
+                John pulls out the bank card from the ATM,
+                The ATM shows the message: "<span concordion:assert-equals="withdraw(#bankCardNumber,#pin,#amount)">The entered amount is invalid!</span>".
+            	The balance of the account should be <span concordion:assert-equals="getBalance(#accountNumber)">90.00</span>.
+            </p>
+        </div>
+        
+        <div concordion:example="alternative-c">
+        	<h3>Scenario</h3>
+            <p>
+            	A customer tries to withdraw an amount that is greater than his/her account balance.
+        	</p>
+        	
+        	<h3>Example</h3>
+        	
+            <p>
+                Piper chooses the withdraw option	
+                and enters the amount of $<span concordion:set="#amount">31</span>.
+                The ATM requests the PIN.
+                John informs <span concordion:set="#pin">123456</span> and confirms the operation.
+                Then, John pulls out the bank card from the ATM.
+                The ATM shows: "<span concordion:assert-equals="withdraw(#bankCardNumber,#pin,#amount)">Non-sufficient funds! Please, check your balance and try again.</span>".
+            	The balance of the account should be <span concordion:assert-equals="getBalance(#accountNumber)">90.00</span>.
+            </p>
+        </div>
+    
+    </body>
+</html>
