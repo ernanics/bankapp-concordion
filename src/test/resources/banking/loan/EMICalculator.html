@@ -7,58 +7,69 @@
 
 	<body>
 
-        <h1>Feature: EMI Calculator</h1>
+        <h1>Feature: Simulador de financiamento</h1>
         
-        <h2>Business Rules</h2>
+        <h2>Regras de Negócio</h2>
         <p>
-       		<p>EMI is a fixed payment amount made by a borrower to a lender at a specific date each calendar month. </p> 
-    		<p>The mathematical formula for calculating EMIs is the following:  
-    		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EMI=P*R*[((1+R)ˆN)/(((1+R)ˆN)-1)],<br/> where P stands for the loan amount or principal, R is the interest rate per month,  and N is the number of monthly installments.</p> 
+			EMI é a sigla em inglês que corresponte ao valor das parcelas mensais de um financiamento.
+		    <br />O calculo do EMI é realizado utilizado a fórmula matemática abaixo: 
+		    <br />EMI=P*R*[((1+R)ˆN)/(((1+R)ˆN)-1)], onde 
+		    <br />&nbsp;&nbsp;&nbsp;P é o valor total a ser financiado, 
+		    <br />&nbsp;&nbsp;&nbsp;R é a taxa de juros mensais, 
+		    <br />&nbsp;&nbsp;&nbsp;e N é o número de parcelas.
+		    <br />O clinete informa esses valores e o aplicativo retorna o valor de cada parcela e o valor total do financiamento
+		    com juros.        
+        </p>
         
+        <p>
+        Eu como cliente
+		<br />Quero simular o valor das parcelas de um empréstimo dada determinada taxa de juros mensal e número de parcelas.
+		<br />Então eu acesso o aplicativo do banco, informo estes valores e o aplicativo me mostra o valor de cada parcela e o valor final que irei ter pago.
         </p>
         
         <div concordion:example="before">
         	<h3>Before</h3>
         	<p concordion:execute="setCustomer(#customerName, #accountNumber, #accountBalance, #bankCardNumber, #bankCardPIN)">
-        		<span concordion:set="#customerName">J. F. Piper</span> is a client of The American Bank
-                He has a current account, which number <span concordion:set="#accountNumber">12565408</span> and balance is $<span concordion:set="#accountBalance">90.00</span>
-                Piper goes to an ATM and identifies himself using a bank card number <span concordion:set="#bankCardNumber">8888 7777 6666 5555</span>
-                The bank card PIN is <span concordion:set="#bankCardPIN">123456</span>      	
-        	</p>
+        		<span concordion:set="#customerName">J. F. Piper</span> é cliente do The American Bank
+                Ele tem uma conta corrente número <span concordion:set="#accountNumber">12565408</span> e o saldo da conta é $<span concordion:set="#accountBalance">90.00</span>.
+                Piper vai a um caixa eletrônico e se indentifica com o cartão número <span concordion:set="#bankCardNumber">8888 7777 6666 5555</span>.
+                A senha deste cartão é <span concordion:set="#bankCardPIN">123456</span>.
+              	O Caixa eletrônico tem a seguinte quantidade de notas de 10, 20, 50 e 100, respectivamente: <span concordion:execute="setAvailableBills(#TEXT)">200,0,150,110,100</span>.       	
+        	</p>  
         
         </div>
 
         <div concordion:example="basic-flow">
         	<h3>Scenario</h3>
             <p>
-            	J. F. Piper wants to simulate the value of the monthly installments of a financing (EMI). 
-            	Piper informs in the app the amount, the interest rate, and the number of monthly installments. 
-            	The application returns the EMI and the total amount financed with interest. 
+            	J. F. Piper quer simular o valor das parcelas mensais (EMI) de um financiamento. 
+            	Piper informa o valor a financiar, a taxa de juros, e o número de parcelas que deseja pagar. 
+            	A aplicação retorna o valor das parcelas do financiamento e o valor total a pagar com juros.
         	</p>
         	
         	 <h3>Examples</h3>
         	 
             <table concordion:execute="#result = calculateEMI(#amout, #interestRate, #numberOfMonthlyInstallments)">
 			    <tr>
-			        <th concordion:set="#amout">Total amount financed</th>
-			        <th concordion:set="#interestRate">Interest rate (%)</th>
-			        <th concordion:set="#numberOfMonthlyInstallments">Number of monthly installments</th>
-			        <th concordion:assert-equal="#result.EMIValue">EMI Value</th>
-			        <th concordion:assert-equals="#result.amoutWithInterest">Total amount financed with interest</th>
+			        <th concordion:set="#amout">Valor financiado</th>
+			        <th concordion:set="#interestRate">Taxa de juros (%)</th>
+			        <th concordion:set="#numberOfMonthlyInstallments">Número de parcelas</th>
+			        <th concordion:assert-equal="#result.EMIValue">Valor das parcelas</th>
+			        <th concordion:assert-equals="#result.amoutWithInterest">Valor total financiado com Juros</th>
 			    </tr>
 				<tr>
-			        <td>10,000.00</td>
+			        <td>10000.00</td>
 			        <td>0.5334</td>
 			        <td>12</td>
 			        <td>862.51</td>
-			        <td>10,350.09</td>
+			        <td>10350.09</td>
 			    </tr>
 			    <tr>
-			        <td>100,000,000.00</td>
+			        <td>100000000.00</td>
 			        <td>0.3227</td>
 			        <td>36</td>
-			        <td>2,946,725.65</td>
-			        <td>106,082,159.40</td>
+			        <td>2946725.65</td>
+			        <td>106082159.40</td>
 			    </tr>
 			    <tr>
 			        <td>500.00</td>
@@ -68,16 +79,13 @@
 			        <td>501.90</td>
 			    </tr>
 			    <tr>
-			        <td>3,250,500.000</td>
+			        <td>3250500.00</td>
 			        <td>0.7665</td>
 			        <td>72</td>
-			        <td>58,911.94</td>
-			        <td>14,241,659.68</td>
+			        <td>58911.94</td>
+			        <td>14241659.68</td>
 			    </tr>
 			</table>
         </div>
-        
-     
-    
     </body>
 </html>
