@@ -1,7 +1,7 @@
 <html xmlns:concordion="http://www.concordion.org/2007/concordion">
 
     <head>
-        <link href="../../concordion.css" rel="stylesheet" type="text/css" />
+        <link href="../concordion.css" rel="stylesheet" type="text/css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </head>
 
@@ -10,13 +10,12 @@
         <h1>Feature: Caixa Eletrônico - Sacar Dinheiro</h1>
         
         <h2>Regras de Negócio</h2>
-        <p>
 	        <ul>
 	        	<li>Se o cliente informar a senha do cartão incorretamente três vezes dentro de 72 horas, o cartão é bloqueado.</li> 
 	       		<li>Se o cliente informar um valor para sacar maior que o saldo da conta corrente, o caixa eletrônico emite uma mensagem que o saldo é insuficiente e encerra a operação.</li>
 	        	<li>Se não há notas disponíveis para entregar determinado valor ao cliente, o caixa eletrônico deve emitir uma mensagem e encerrar a operação. </li>   
         	</ul>
-        </p>
+        
         
         <h2>User story</h2>
         <p>
@@ -26,12 +25,12 @@
 	      
         </p>
         
+        <h3>Before</h3>
         <div concordion:example="before">
-        	<h3>Before</h3>
         	<p concordion:execute="setCustomer(#customerName, #accountNumber, #accountBalance, #bankCardNumber, #bankCardPIN)">
         		<span concordion:set="#customerName">J. F. Piper</span> é cliente do The American Bank
                 Ele tem uma conta corrente número <span concordion:set="#accountNumber">12565408</span> e o saldo da conta é $<span concordion:set="#accountBalance">90.00</span>.
-                Piper vai a um caixa eletrônico e se indentifica com o cartão número <span concordion:set="#bankCardNumber">8888 7777 6666 5555</span>.
+                Piper vai a um caixa eletrônico e se indentifica com o cartão número <span concordion:set="#bankCardNumber">8888777766665555</span>.
                 A senha deste cartão é <span concordion:set="#bankCardPIN">123456</span>.
               	O Caixa eletrônico tem a seguinte quantidade de notas de 10, 20, 50 e 100, respectivamente: <span concordion:execute="setAvailableBills(#TEXT)">200,0,150,110,100</span>.       	
         	</p>        
@@ -66,7 +65,7 @@
         	<h3>Examples</h3>
         	
             <p>
-            	Piper informou a senha do seu cartão incorretamente <span concordion:execute="setNumberOfIncorretPINWithin72Hours(#TEXT)">0</span> vezes em 72 horas.
+            	Piper informou a senha do seu cartão incorretamente <span concordion:execute="setNumberOfIncorretPINWithin72Hours(#TEXT, #bankCardNumber)">0</span> vezes em 72 horas.
                 Piper escolhe a opção Saque.
                 Ele informa que deseja sacar $<span concordion:set="#amount">30.00</span>. 
                 O caixa eletrônico pede a senha do cartão.
@@ -77,7 +76,7 @@
             </p>
         
             <p>
-            	Piper informou a senha do seu cartão incorretamente <span concordion:execute="setNumberOfIncorretPINWithin72Hours(#TEXT)">1</span> vez em 72 horas.
+            	Piper informou a senha do seu cartão incorretamente <span concordion:execute="setNumberOfIncorretPINWithin72Hours(#TEXT, #bankCardNumber)">1</span> vez em 72 horas.
                 Piper escolhe a opção Saque.
                 Ele informa que deseja sacar $<span concordion:set="#amount">30.00</span>. 
                 O caixa eletrônico pede a senha do cartão.
@@ -88,7 +87,7 @@
             </p>
        
             <p>
-            	Piper informou a senha do seu cartão incorretamente <span concordion:execute="setNumberOfIncorretPINWithin72Hours(#TEXT)">1</span> vez em 72 horas.
+            	Piper informou a senha do seu cartão incorretamente <span concordion:execute="setNumberOfIncorretPINWithin72Hours(#TEXT, #bankCardNumber)">1</span> vez em 72 horas.
                 Piper escolhe a opção Saque	
                 Ele informa que deseja sacar $<span concordion:set="#amount">30.00</span>. 
                 O caixa eletrônico pede a senha do cartão
