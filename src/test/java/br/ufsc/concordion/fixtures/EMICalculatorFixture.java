@@ -12,7 +12,7 @@ import br.ufsc.model.Loan;
 
 @RunWith(ConcordionRunner.class)
 public class EMICalculatorFixture {
-	public String customerName;
+	/*public String customerName;
 	public String accountNumber;
 	public double accountBalance;
 	public String bankCardNumber;
@@ -20,9 +20,9 @@ public class EMICalculatorFixture {
 	
 	public Double amount;
 	public Double interestRate;
-	public Long numberOfMonthlyInstallments;
-	public Loan loan;
+	public Long numberOfMonthlyInstallments;*/
 	
+	public Loan loan;
 	public ATM atm;
 
 	public void setCustomer(String customerName, String accountNumber, double accountBalance, String bankCardNumber, int bankCardPIN) {
@@ -30,13 +30,18 @@ public class EMICalculatorFixture {
 		atm.getBank().createBankCustomer(1, customerName, bankCardNumber, bankCardPIN, accountNumber, accountBalance);
 	}
 	
+	public void setAvailableBills(String bills) {
+		String[] arrayBills = bills.split(",");
+		atm.chargeBills(Integer.parseInt(arrayBills[0]), Integer.parseInt(arrayBills[1]), Integer.parseInt(arrayBills[2]), Integer.parseInt(arrayBills[3]), Integer.parseInt(arrayBills[4]));
+	}
+	
 	public Map<String, String> calculateEMI(Double amount, Double interestRate, Long numberOfMonthlyInstallments) {
 		loan = new Loan(amount, interestRate, numberOfMonthlyInstallments);
 		loan.getNumberOfMontlhyInstalments();
 		loan.getLoanAmountWithInterests();
 		Map<String, String> results = new HashMap<String, String>();
-	    results.put("firstName", loan.getNumberOfMontlhyInstalments().toString());
-	    results.put("lastName", loan.getLoanAmountWithInterests().toString());
+	    results.put("emiValue", loan.getValueOfMontlhyInstalments().toString());
+	    results.put("loanAmountWithInterest", loan.getLoanAmountWithInterests().toString());
 	    return results;
 	}
 }

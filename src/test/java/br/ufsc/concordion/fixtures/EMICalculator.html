@@ -14,9 +14,9 @@
 			EMI é a sigla em inglês que corresponte ao valor das parcelas mensais de um financiamento.
 		    <br />O calculo do EMI é realizado utilizado a fórmula matemática abaixo: 
 		    <br />EMI=P*R*[((1+R)ˆN)/(((1+R)ˆN)-1)], onde 
-		    <br />&nbsp;&nbsp;&nbsp;P é o valor total a ser financiado, 
-		    <br />&nbsp;&nbsp;&nbsp;R é a taxa de juros mensais, 
-		    <br />&nbsp;&nbsp;&nbsp;e N é o número de parcelas.
+		    <br />P é o valor total a ser financiado, 
+		    <br />R é a taxa de juros mensais, 
+		    <br />e N é o número de parcelas.
 		    <br />O clinete informa esses valores e o aplicativo retorna o valor de cada parcela e o valor total do financiamento
 		    com juros.        
         </p>
@@ -27,16 +27,15 @@
 		<br />Então eu acesso o aplicativo do banco, informo estes valores e o aplicativo me mostra o valor de cada parcela e o valor final que irei ter pago.
         </p>
         
+        <h3>Before</h3>
         <div concordion:example="before">
-        	<h3>Before</h3>
         	<p concordion:execute="setCustomer(#customerName, #accountNumber, #accountBalance, #bankCardNumber, #bankCardPIN)">
         		<span concordion:set="#customerName">J. F. Piper</span> é cliente do The American Bank
                 Ele tem uma conta corrente número <span concordion:set="#accountNumber">12565408</span> e o saldo da conta é $<span concordion:set="#accountBalance">90.00</span>.
-                Piper vai a um caixa eletrônico e se indentifica com o cartão número <span concordion:set="#bankCardNumber">8888 7777 6666 5555</span>.
+                Piper vai a um caixa eletrônico e se indentifica com o cartão número <span concordion:set="#bankCardNumber">8888777766665555</span>.
                 A senha deste cartão é <span concordion:set="#bankCardPIN">123456</span>.
               	O Caixa eletrônico tem a seguinte quantidade de notas de 10, 20, 50 e 100, respectivamente: <span concordion:execute="setAvailableBills(#TEXT)">200,0,150,110,100</span>.       	
         	</p>  
-        
         </div>
 
         <div concordion:example="basic-flow">
@@ -54,8 +53,8 @@
 			        <th concordion:set="#amout">Valor financiado</th>
 			        <th concordion:set="#interestRate">Taxa de juros (%)</th>
 			        <th concordion:set="#numberOfMonthlyInstallments">Número de parcelas</th>
-			        <th concordion:assert-equal="#result.EMIValue">Valor das parcelas</th>
-			        <th concordion:assert-equals="#result.amoutWithInterest">Valor total financiado com Juros</th>
+			        <th concordion:assert-equals="#result.emiValue">Valor das parcelas</th>
+			        <th concordion:assert-equals="#result.loanAmountWithInterest">Valor total financiado com Juros</th>
 			    </tr>
 				<tr>
 			        <td>10000.00</td>
@@ -69,21 +68,21 @@
 			        <td>0.3227</td>
 			        <td>36</td>
 			        <td>2946725.65</td>
-			        <td>106082159.40</td>
+			        <td>106082123.23</td>
 			    </tr>
 			    <tr>
 			        <td>500.00</td>
 			        <td>0.1250</td>
 			        <td>5</td>
 			        <td>100.38</td>
-			        <td>501.90</td>
+			        <td>501.88</td>
 			    </tr>
 			    <tr>
 			        <td>3250500.00</td>
 			        <td>0.7665</td>
 			        <td>72</td>
 			        <td>58911.94</td>
-			        <td>14241659.68</td>
+			        <td>4241659.83</td>
 			    </tr>
 			</table>
         </div>
