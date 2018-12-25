@@ -2,7 +2,6 @@ package br.ufsc.concordion.fixtures;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
@@ -12,15 +11,8 @@ import br.ufsc.model.PinHistory;
 
 @RunWith(ConcordionRunner.class)
 public class WithdrawFixture {
-	/*public String customerName;
-	public String accountNumber;
-	public double accountBalance;
-	public String bankCardNumber;
-	public int bankCardPIN;*/
 	
 	public ATM atm;
-	//public int pin;
-	//public int amount;
 	
 	public void setCustomer(String customerName, String accountNumber, double accountBalance, String bankCardNumber, int bankCardPIN) {
 		atm = new ATM();

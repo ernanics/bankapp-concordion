@@ -1,6 +1,5 @@
 package br.ufsc.concordion.fixtures;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,15 +11,6 @@ import br.ufsc.model.Loan;
 
 @RunWith(ConcordionRunner.class)
 public class EMICalculatorFixture {
-	/*public String customerName;
-	public String accountNumber;
-	public double accountBalance;
-	public String bankCardNumber;
-	public int bankCardPIN;
-	
-	public Double amount;
-	public Double interestRate;
-	public Long numberOfMonthlyInstallments;*/
 	
 	public Loan loan;
 	public ATM atm;
