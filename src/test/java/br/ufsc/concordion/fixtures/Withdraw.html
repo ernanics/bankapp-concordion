@@ -136,6 +136,26 @@
             	O saldo da conta corrente deverá ser <span concordion:assert-equals="getBalance(#bankCardNumber)">90.0</span>.
             </p>
         </div>
+        
+        <div concordion:example="alternative-d">
+        	<h3>Scenario</h3>
+            <p>
+            	Um cliente vai até um Caixa eletrônico e não consegue realizar o saque pois seu cartão está bloqueado
+        	</p>
+        	
+        	<h3>Example</h3>
+        	
+            <p>
+            	Piper informou a senha do seu cartão incorretamente <span concordion:execute="setNumberOfIncorretPINWithin72Hours(#TEXT, #bankCardNumber)">3</span> vez em 72 horas.
+                Piper escolhe a opção Saque	
+                Ele informa que deseja sacar $<span concordion:set="#amount">30</span>. 
+                O caixa eletrônico pede a senha do cartão
+                John informa a senha <span concordion:set="#pin">123456</span> e confirma a operação.
+                John retira o cartão do caixa eletrônico.
+                O caixa eletrônico mostra a mensagem  <span concordion:assert-equals="withdraw(#bankCardNumber,#pin,#amount)">Este cartão está bloqueado!</span>.
+                O saldo da conta corrente deverá ser <span concordion:assert-equals="getBalance(#bankCardNumber)">90.0</span>.
+            </p>
+        </div>
     
     </body>
 </html>
