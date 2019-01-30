@@ -1,7 +1,5 @@
 package br.ufsc.concordion.fixtures;
 
-<<<<<<< HEAD
-=======
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,9 +9,6 @@ import org.junit.runner.RunWith;
 
 @RunWith(ConcordionRunner.class)
 public class EMICalculatorFixture {
-<<<<<<< HEAD
-	
-=======
->>>>>>> refs/remotes/origin/ConcordionEx001
+
 	
 }
